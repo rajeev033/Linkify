@@ -1,76 +1,82 @@
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import Header from '../components/Header';
 import SideBar from '../components/SideBar';
-import { AuthContext } from '../context/AuthContext';
-import {useContext, useEffect, useState, useRef} from 'react';    
-import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
 import NoSelectScreen from '../components/NoSelectionScreen';
 import NewLinkBox from '../components/NewLinkForm';
 import MyLinks from '../components/MyLinks';
 import AnalyticsGrid from '../components/AnalyticsGrid';
-function Dashboard()
-{
-    const {isLoggedIn, setIsLoggedIn} = useContext(AuthContext);
+
+function Dashboard() {
+    const { setIsLoggedIn } = useContext(AuthContext);
     const [content, setContent] = useState('noselect');
+    const [selectedShortID, setSelectedShortID] = useState(null);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
-    const shortID=useRef(null);
-    function handleLogout()
-    {
-        axios.get('http://localhost:8080/api/v1/user/logout', {withCredentials: true});
-        localStorage.removeItem('userData');
-        setIsLoggedIn(false);
-        alert('You have been logged out successfully!')
-        navigate('/');
-    
-    }
-  useEffect(() => {
+
+    useEffect(() => {
         async function checkLoggedIn() {
             try {
-              const res = await axios.get('http://localhost:8080/api/v1/user/isLoggedIn', {withCredentials: true});
-              setIsLoggedIn(true);
-              
+                await axios.get('http://localhost:8080/api/v1/user/isLoggedIn', { withCredentials: true });
+                setIsLoggedIn(true);
             } catch (e) {
-                alert('You are not logged in! Please login to continue');
                 setIsLoggedIn(false);
-               navigate('/');
-              console.log("yeah, you are not logged in ");
+                navigate('/login');
             }
-          }
-          checkLoggedIn();
-         
-    },[]);
-    function handleCurrentContent(val, urlID=null)
-    {
-        setContent(val);
-        shortID.current=urlID;
-    }
+        }
+        checkLoggedIn();
+    }, [setIsLoggedIn, navigate]);
 
-    let currentContent=null;
-    if(content==='noselect')
-    {
-        currentContent=<NoSelectScreen handleButtonActions={handleCurrentContent}/>
-    }
-    else if(content==='newlink')
-    {
-        currentContent=<NewLinkBox/>
-    }
-    else if(content==='listlinks')
-    {
-        currentContent=<MyLinks handleContent={handleCurrentContent}/>
-    }
-    else if(content==='analytics')
-    {
-        currentContent=<AnalyticsGrid shortID={shortID.current}/>
-    }
+    const handleLogout = async () => {
+        try {
+            await axios.get('http://localhost:8080/api/v1/user/logout', { withCredentials: true });
+            localStorage.removeItem('userData');
+            setIsLoggedIn(false);
+            navigate('/');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
 
-    return(
-        <div className='flex flex-row justify-between'>
-            <div className="h-[100%] w-[100%] rounded-[300px] absolute z-[-1] blur-[240px] bg-gradient-to-r from-[#A1D1FD] via-[#daecfd] to-[#FFC56F]"></div>
-            <Header onLogout={handleLogout}/>
-            <SideBar handleSidebarActions={handleCurrentContent} active={content}/>
-            {currentContent}
+    const handleContentChange = (newContent, urlID = null) => {
+        setContent(newContent);
+        setSelectedShortID(urlID);
+        setSidebarOpen(false);
+    };
+
+    const renderContent = () => {
+        switch (content) {
+            case 'noselect':
+                return <NoSelectScreen handleButtonActions={handleContentChange} />;
+            case 'newlink':
+                return <NewLinkBox />;
+            case 'listlinks':
+                return <MyLinks handleContent={handleContentChange} />;
+            case 'analytics':
+                return <AnalyticsGrid shortID={selectedShortID} />;
+            default:
+                return <NoSelectScreen handleButtonActions={handleContentChange} />;
+        }
+    };
+
+    return (
+        <div className="flex h-screen bg-gray-50">
+            <SideBar 
+                handleSidebarActions={handleContentChange} 
+                active={content} 
+                isOpen={sidebarOpen}
+                setIsOpen={setSidebarOpen}
+            />
+            <div className="flex-1 flex flex-col overflow-hidden">
+                <Header onLogout={handleLogout} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+                <main className="flex overflow-x-hidden  bg-gray-50 mt-[5rem] py-5">
+                    {renderContent()}
+                </main>
             </div>
-        
+        </div>
     );
 }
+
 export default Dashboard;

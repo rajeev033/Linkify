@@ -1,27 +1,30 @@
 import ShortLinkBox from "./ShortLinkBox";
 import Features from "./Features";
-function Hero()
-{
+
+function Hero() {
     return (
-    <>
-        <div className="Hero h-[100dvh] mt-[14dvh] flex justify-evenly items-center flex-row flex-wrap max-[424px]:justify-center" id="hero-st">
-        <div className="h-[100%] w-[100%] rounded-[300px] absolute z-[-1] blur-[240px] bg-gradient-to-r from-pink-100 via-pink-200 to-purple-400"></div>
-
-                <div className="HeroText h-[40dvh] px-2.5 flex flex-col items-center justify-center max-[424px]:mt-[1rem] max-[424px]:text-[2.2rem] max-[424px]:mx-[1rem]">
-                    <p className="text-center">Make Your Links</p>
-                    <p className="text-center"><span className="bg-gradient-to-r from-purple-800 from-20% to-cyan-600 text-transparent bg-clip-text">Shorter, </span>
-                    <span className="bg-gradient-to-r from-orange-500 to-red-600 text-transparent bg-clip-text">Smarter, </span>
-                    <span className="bg-gradient-to-r from-pink-600 from-50% via-violet-700 to-blue-600 text-transparent bg-clip-text">Better.</span></p>
+        <div className="bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 min-h-screen pt-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+                <div className="text-center mb-16">
+                    <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">
+                        Make Your Links
+                        <span className="block mt-2">
+                            <span className="text-indigo-600">Shorter</span>,{" "}
+                            <span className="text-purple-600">Smarter</span>,{" "}
+                            <span className="text-pink-600">Better</span>.
+                        </span>
+                    </h1>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Transform your long URLs into powerful, trackable short links. Boost your online presence with our cutting-edge link management platform.
+                    </p>
                 </div>
-                <ShortLinkBox/>
-                
-                <Features/>
-                <div className="h-[100%] w-[100%] rounded-[300px] absolute top-[100dvh] z-[-1] blur-[240px] bg-gradient-to-r from-pink-100 via-pink-200 to-purple-400"></div>
+
+                <ShortLinkBox />
+
+                <Features />
+            </div>
         </div>
-        
-
-
-    </>
-    )
+    );
 }
+
 export default Hero;

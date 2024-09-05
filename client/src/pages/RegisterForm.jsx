@@ -1,13 +1,15 @@
-import {useState, useEffect, useContext} from 'react';
+import { useState, useContext } from 'react';
 import { AuthContext } from "../context/AuthContext";
 import { Form, Input, Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+
 const RegisterForm = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUser} = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
+
   const onFinish = async (values) => {
     setLoading(true);
     try {
@@ -21,69 +23,63 @@ const RegisterForm = () => {
           withCredentials: true,
         }
       );
-      const userData=res.data.data.user;
-      const userDataJSON = JSON.stringify(userData);
-      localStorage.setItem('userData', userDataJSON);
+      const userData = res.data.data.user;
+      localStorage.setItem('userData', JSON.stringify(userData));
       setLoading(false);
-      console.log(userData);
       setUser(userData);
       setIsLoggedIn(true);
-
       navigate("/dashboard");
     } catch (e) {
-      setLoading((loading) => {
-        !loading;
-      });
-      alert("login Failed! Please try again");
+      setLoading(false);
+      alert("Registration Failed! Please try again");
       console.error(e);
     }
   };
 
-
   return (
-    <div className="flex justify-center items-center h-screen">
-        <div className="h-[100%] w-[100%] rounded-[300px] absolute z-[-1] blur-[540px] bg-gradient-to-r from-[#fed18d] via-[#ffbee2] to-[#da9eff]"></div>
-      <div className="bg-[#ffffff7a] p-8 rounded-[24px] shadow-md md:w-[30dvw] md:h-[90dvh] w-[80dvw] h-[80dvh] flex flex-col justify-evenly">
-        <h2 className="text-2xl font-bold text-center mb-2">Create an Account</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 px-8">
+      <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">Create an Account</h2>
         <Form
           form={form}
           name="register"
           onFinish={onFinish}
-          initialValues={{ remember: true }}
-          className="mt-2"
+          layout="vertical"
+          className="space-y-4"
         >
           <Form.Item
             name="firstName"
             rules={[{ required: true, message: 'Please input your first name!' }]}
           >
-            <Input placeholder="First Name" className="input-styles" />
+            <Input placeholder="First Name" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </Form.Item>
           <Form.Item
             name="lastName"
             rules={[{ required: true, message: 'Please input your last name!' }]}
           >
-            <Input placeholder="Last Name" className="input-styles" />
+            <Input placeholder="Last Name" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </Form.Item>
           <Form.Item
             name="userName"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input placeholder="Username" className="input-styles" />
+            <Input placeholder="Username" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </Form.Item>
           <Form.Item
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input placeholder="Email" className="input-styles" />
+            <Input placeholder="Email" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </Form.Item>
           <Form.Item
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password placeholder="Password" className="input-styles" />
+            <Input.Password placeholder="Password" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </Form.Item>
           <Form.Item
             name="reenterPassword"
+            dependencies={['password']}
             rules={[
               { required: true, message: 'Please re-enter your password!' },
               ({ getFieldValue }) => ({
@@ -96,19 +92,22 @@ const RegisterForm = () => {
               }),
             ]}
           >
-            <Input.Password placeholder="Re-enter Password" className="input-styles" />
+            <Input.Password placeholder="Re-enter Password" className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </Form.Item>
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
               loading={loading}
-              className="w-full bg-black hover:scale-[0.95] btn text-white text-base leading-[0.5rem] font-bold py-2 px-4 rounded-[24px] mt-3"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 rounded-md transition duration-300 "
             >
               Register
             </Button>
           </Form.Item>
         </Form>
+        <p className="text-center mt-4 text-gray-600">
+          Already have an account? <Link to="/login" className="text-indigo-600 hover:underline">Login</Link>
+        </p>
       </div>
     </div>
   );

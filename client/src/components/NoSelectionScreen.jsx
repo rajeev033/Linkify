@@ -1,15 +1,24 @@
+function NoSelectScreen({ handleButtonActions }) {
+  const userData = JSON.parse(localStorage.getItem('userData'));
 
-
-function NoSelectScreen({handleButtonActions}) 
-{
-  const userDataJSON = localStorage.getItem('userData');
-  const userData = JSON.parse(userDataJSON);
   return (
-    <div className="flex flex-col items-center justify-center bg-[#ffffffbb] text-center rounded-lg p-8 w-[50dvw] ml-[1rem] mr-[1rem] flex-grow h-[80dvh] mt-[14dvh]">
-      <h1 className="text-4xl font-bold mb-4">Hi, {userData.firstName}</h1>
-      <p className="text-lg text-gray-500 mb-6">No Link Selected</p>
-      <button className="bg-black text-white py-2 px-6 rounded-[24px] mb-4 hover:scale-[1.05] transition-all" onClick={()=>{handleButtonActions('newlink')}}>Create New Link</button>
-      <button className="text-blue-500 py-2 px-6 rounded-[24px] border-2 border-blue-500 hover:scale-[1.05] transition-all" onClick={()=>{handleButtonActions('listlinks')}}>My Links</button>
+    <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto text-center">
+      <h1 className="text-3xl font-bold text-gray-800 mb-4">Hi, {userData.firstName}</h1>
+      <p className="text-lg text-gray-600 mb-8">What would you like to do today?</p>
+      <div className="space-y-4">
+        <button 
+          className="w-full bg-indigo-600 text-white py-2 px-6 rounded-md hover:bg-indigo-700 transition duration-300"
+          onClick={() => handleButtonActions('newlink')}
+        >
+          Create New Link
+        </button>
+        <button 
+          className="w-full bg-white text-indigo-600 py-2 px-6 rounded-md border border-indigo-600 hover:bg-indigo-50 transition duration-300"
+          onClick={() => handleButtonActions('listlinks')}
+        >
+          View My Links
+        </button>
+      </div>
     </div>
   );
 }

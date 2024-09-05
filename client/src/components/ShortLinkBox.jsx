@@ -26,16 +26,33 @@ function ShortLinkBox()
     setShortLink("");
   }
 
-
-  
-  
-    return (
-    <div className=" border-[#cccccc] border-[1px] h-[50dvh] w-[30dvw] py-[2rem] px-[1rem] bg-white bg-opacity-[0.39] shadow-md  rounded-[24px] flex flex-col items-center justify-evenly max-[424px]: w-[80dvw] mx-auto">
-      <h2><span className="bg-gradient-to-r from-[#D10081] to-[#FFA800] text-transparent bg-clip-text text-[2rem] max-[424px]:text-[1.6rem]">{shortLink?"Your Short Link:":"Shorten Your Link:"}</span></h2>
+  return (
+    <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        {shortLink ? "Your Short Link:" : "Shorten Your Link:"}
+      </h2>
       
-        {shortLink?<p>{shortLink}</p>:<input type="text" ref={inputRef} required={true} placeholder="Enter long link" className="rounded-[8px] h-[20%] w-[75%] my-1 py-2 px-3 bg-[#ffffff] shadow"/>}
-        {shortLink?<Button onClick={handleCreateAnotherLink}>Create Another Link</Button>:<Button onClick={shortenLink}>Create Short Link</Button>}
+      {shortLink ? (
+        <div className="mb-6">
+          <p className="text-indigo-600 text-lg font-medium break-all">{shortLink}</p>
+        </div>
+      ) : (
+        <input
+          type="text"
+          ref={inputRef}
+          required={true}
+          placeholder="Enter long link"
+          className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-6"
+        />
+      )}
       
-    </div>);
+      <button
+        onClick={shortLink ? handleCreateAnotherLink : shortenLink}
+        className="w-full bg-indigo-600 text-white font-medium py-3 px-4 rounded-md hover:bg-indigo-700 transition duration-300"
+      >
+        {shortLink ? "Create Another Link" : "Create Short Link"}
+      </button>
+    </div>
+  );
 }
 export default ShortLinkBox;
