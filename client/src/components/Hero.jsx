@@ -3,7 +3,7 @@ import Features from "./Features";
 
 function Hero() {
     return (
-        <div className="bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 min-h-screen pt-8">
+        <div className="bg-gradient-to-br  min-h-screen pt-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
                 <div className="text-center mb-16">
                     <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">

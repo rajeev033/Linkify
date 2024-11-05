@@ -37,9 +37,9 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 px-8">
-      <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">Create an Account</h2>
+    <div className="flex justify-center items-center min-h-screen bg-white px-8">
+      <div className="bg-white bg-opacity-90 p-8 rounded-md border-[1px] w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-black">Create an Account</h2>
         <Form
           form={form}
           name="register"
@@ -99,14 +99,14 @@ const RegisterForm = () => {
               type="primary"
               htmlType="submit"
               loading={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 rounded-md transition duration-300 "
+              className="w-full bg-black hover:!bg-gray-800 text-white font-bold px-4 rounded-md transition duration-300 "
             >
               Register
             </Button>
           </Form.Item>
         </Form>
-        <p className="text-center mt-4 text-gray-600">
-          Already have an account? <Link to="/login" className="text-indigo-600 hover:underline">Login</Link>
+        <p className="text-center mt-4 text-gray-400">
+          Already have an account? <Link to="/login" className="text-black hover:underline">Login</Link>
         </p>
       </div>
     </div>

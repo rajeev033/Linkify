@@ -1,13 +1,25 @@
-import { useContext } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Header({ onLogout, toggleSidebar }) {
   const { isLoggedIn } = useContext(AuthContext);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPercentage = (window.scrollY / document.documentElement.scrollHeight) * 100;
+      setHasScrolled(scrollPercentage > 5);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
 
   return (
-    <header className="bg-white bg-opacity-15 backdrop-blur-[75px] backdrop-filter-[50p]  fixed top-0 left-0 right-0 z-50">
+    <header className={`bg-[#ffffffb6] backdrop-blur-[15px] p-0  fixed top-0 left-0 right-0 z-50 ${hasScrolled && 'shadow-md'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -19,29 +31,29 @@ export default function Header({ onLogout, toggleSidebar }) {
                 </svg>
               </button>
             )}
-            <Link to="/" className="text-2xl font-bold text-indigo-600">LinkiFy</Link>
+            <Link to="/" className="text-2xl font-bold text-gray-600">LinkiFy</Link>
           </div>
           <div className="flex items-center space-x-4">
             {!isLoggedIn ? (
               <>
                 <Link
                   to="/login"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black bg-white hover:bg-gray-100">
+                
                   Sign Up
                 </Link>
               </>
             ) : (
               <button
                 onClick={onLogout}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black">
+              
                 Logout
               </button>
             )}
@@ -52,8 +64,3 @@ export default function Header({ onLogout, toggleSidebar }) {
   );
 }
 
-// Add prop types validation
-Header.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-  toggleSidebar: PropTypes.func.isRequired,
-};
